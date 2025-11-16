@@ -1,0 +1,19 @@
+package com.example.student_management.repositories;
+
+import java.util.Collection;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import com.example.student_management.entities.Student;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Integer> {
+
+    // Recherche d'un étudiant par son identifiant
+    Optional<Student> findById(Integer id); // ✅ JpaRepository le fournit déjà, mais si tu le gardes -> Optional
+
+    // Requête personnalisée pour compter les étudiants par année de naissance
+    @Query("SELECT YEAR(s.dateNaissance), COUNT(s) FROM Student s GROUP BY YEAR(s.dateNaissance)")
+    Collection<Object[]> findNbrStudentByYear(); // ✅ type correct et cohérent
+}
